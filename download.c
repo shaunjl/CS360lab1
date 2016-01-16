@@ -26,6 +26,7 @@ int  main(int argc, char* argv[])
 
     bool cflag = FALSE;
     bool dflag = FALSE;
+    int c;
 
     if(argc < 4)
       {
