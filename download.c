@@ -10,6 +10,8 @@
 #define SOCKET_ERROR        -1
 #define BUFFER_SIZE         100
 #define HOST_NAME_SIZE      255
+#define TRUE                 1 
+#define FALSE                0
 
 int  main(int argc, char* argv[])
 {
@@ -21,12 +23,13 @@ int  main(int argc, char* argv[])
     unsigned nReadAmount;
     char strHostName[HOST_NAME_SIZE];
     int nHostPort;
-    bool cflag = false;
-    bool dflag = false;
 
-    if(argc < 3)
+    bool cflag = FALSE;
+    bool dflag = FALSE;
+
+    if(argc < 4)
       {
-        printf("\nUsage: client host-name host-port\n");
+        printf("\nUsage: client <options> host-name host-port url\n");
         return 0;
       }
     else
@@ -35,10 +38,10 @@ int  main(int argc, char* argv[])
             switch (c)
               {
               case 'c':
-                cflag = true;
+                cflag = TRUE;
                 break;
               case 'd':
-                dflag = true;
+                dflag = TRUE;
                 break;
               case '?':
                 if (optopt == 'c')
@@ -55,11 +58,11 @@ int  main(int argc, char* argv[])
               }
         if (cflag)
         {
-            printf ("cflag is true")
+            printf ("cflag is true");
         }
         if (dflag)
         {
-            printf ("dflag is true")
+            printf ("dflag is true");
         }
 
         strcpy(strHostName,argv[optind]);
