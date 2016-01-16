@@ -39,9 +39,11 @@ int  main(int argc, char* argv[])
             switch (c)
               {
               case 'c':
+                printf("c is called with value %s", optarg);
                 num_download = atoi(optarg);
                 break;
               case 'd':
+                printf("d is called");
                 dflag = TRUE;
                 break;
               case '?':
