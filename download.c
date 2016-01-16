@@ -26,7 +26,7 @@ int  main(int argc, char* argv[])
 
     int num_download = 1;
     int dflag = FALSE;
-    int c;
+    int c = 0;
 
     if(argc < 4)
       {
@@ -39,12 +39,10 @@ int  main(int argc, char* argv[])
             switch (c)
               {
               case 'c':
-                num_download = atoi(optarg);
-                printf ("optarg: %s", optarg);
-                printf ("num_download: %s", num_download);
+                printf("c is called with value %s", optarg);
                 break;
               case 'd':
-                dflag = TRUE;
+                printf("d is called");
                 break;
               case '?':
                 if (optopt == 'c')
@@ -59,19 +57,11 @@ int  main(int argc, char* argv[])
               default:
                 abort ();
               }
-        if (num_download != 1)
-        {
-            printf ("num_download changed\n");
-        }
-        if (dflag)
-        {
-            printf ("dflag is true\n");
-        }
 
-        strcpy(strHostName,argv[optind]);
-        printf ("host name: %s\n", strHostName);
-        nHostPort=atoi(argv[optind + 1]);
-        printf ("port: %s\n", nHostPort);
+        // strcpy(strHostName,argv[optind]);
+        // printf ("host name: %s\n", strHostName);
+        // nHostPort=atoi(argv[optind + 1]);
+        // printf ("port: %s\n", nHostPort);
       }
 
     printf("\nMaking a socket");
