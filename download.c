@@ -24,7 +24,7 @@ int  main(int argc, char* argv[])
     char strHostName[HOST_NAME_SIZE];
     int nHostPort;
 
-    int cflag = FALSE;
+    int num_download = 1;
     int dflag = FALSE;
     int c;
 
@@ -35,11 +35,13 @@ int  main(int argc, char* argv[])
       }
     else
       {
-        while ((c = getopt (argc, argv, "cd:")) != -1)
+        while ((c = getopt (argc, argv, "c:d")) != -1)
             switch (c)
               {
               case 'c':
-                cflag = TRUE;
+                num_download = atoi(optarg);
+                printf ("optarg: %s", optarg);
+                printf ("num_download: %s", num_download);
                 break;
               case 'd':
                 dflag = TRUE;
@@ -57,17 +59,19 @@ int  main(int argc, char* argv[])
               default:
                 abort ();
               }
-        if (cflag)
+        if (num_download != 1)
         {
-            printf ("cflag is true");
+            printf ("num_download changed\n");
         }
         if (dflag)
         {
-            printf ("dflag is true");
+            printf ("dflag is true\n");
         }
 
         strcpy(strHostName,argv[optind]);
+        printf ("host name: %s\n", strHostName);
         nHostPort=atoi(argv[optind + 1]);
+        printf ("port: %s\n", nHostPort);
       }
 
     printf("\nMaking a socket");
