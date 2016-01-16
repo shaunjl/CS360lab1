@@ -39,10 +39,10 @@ int  main(int argc, char* argv[])
             switch (c)
               {
               case 'c':
-                printf("c is called with value %s", optarg);
+                num_download = atoi(optarg);
                 break;
               case 'd':
-                printf("d is called");
+                dflag = TRUE;
                 break;
               case '?':
                 if (optopt == 'c')
@@ -57,7 +57,9 @@ int  main(int argc, char* argv[])
               default:
                 abort ();
               }
-
+        printf("Num Download: %s\n", num_download);
+        if(dflag == TRUE)
+            printf("DFlag set\n");
         // strcpy(strHostName,argv[optind]);
         // printf ("host name: %s\n", strHostName);
         // nHostPort=atoi(argv[optind + 1]);
