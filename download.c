@@ -40,7 +40,7 @@ int  main(int argc, char* argv[])
               {
               case 'c':
                 printf("c is called with value %s", optarg);
-                num_download = (int) strtol(optarg, (char **)NULL, 10)
+                num_download = (int) strtol(optarg, (char **)NULL, 10);
                 break;
               case 'd':
                 printf("d is called");
@@ -62,10 +62,10 @@ int  main(int argc, char* argv[])
         printf("Num Download: %i\n", num_download);
         if(dflag == TRUE)
             printf("DFlag set\n");
-        // strcpy(strHostName,argv[optind]);
-        // printf ("host name: %s\n", strHostName);
-        // nHostPort=atoi(argv[optind + 1]);
-        // printf ("port: %s\n", nHostPort);
+        strcpy(strHostName,argv[optind]);
+        printf ("host name: %s\n", strHostName);
+        nHostPort=atoi(argv[optind + 1]);
+        printf ("port: %s\n", nHostPort);
       }
 
     printf("\nMaking a socket");
