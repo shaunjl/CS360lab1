@@ -21,6 +21,8 @@ int  main(int argc, char* argv[])
     unsigned nReadAmount;
     char strHostName[HOST_NAME_SIZE];
     int nHostPort;
+    bool cflag = false;
+    bool dflag = false;
 
     if(argc < 3)
       {
@@ -29,8 +31,39 @@ int  main(int argc, char* argv[])
       }
     else
       {
-        strcpy(strHostName,argv[1]);
-        nHostPort=atoi(argv[2]);
+        while ((c = getopt (argc, argv, "cd:")) != -1)
+            switch (c)
+              {
+              case 'c':
+                cflag = true;
+                break;
+              case 'd':
+                dflag = true;
+                break;
+              case '?':
+                if (optopt == 'c')
+                  fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+                else if (isprint (optopt))
+                  fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+                else
+                  fprintf (stderr,
+                           "Unknown option character `\\x%x'.\n",
+                           optopt);
+                return 1;
+              default:
+                abort ();
+              }
+        if (cflag)
+        {
+            printf ("cflag is true")
+        }
+        if (dflag)
+        {
+            printf ("dflag is true")
+        }
+
+        strcpy(strHostName,argv[optind]);
+        nHostPort=atoi(argv[optind + 1]);
       }
 
     printf("\nMaking a socket");
