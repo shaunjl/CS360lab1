@@ -24,8 +24,8 @@ int  main(int argc, char* argv[])
     char strHostName[HOST_NAME_SIZE];
     int nHostPort;
 
-    bool cflag = FALSE;
-    bool dflag = FALSE;
+    int cflag = FALSE;
+    int dflag = FALSE;
     int c;
 
     if(argc < 4)
