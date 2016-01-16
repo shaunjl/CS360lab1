@@ -40,7 +40,7 @@ int  main(int argc, char* argv[])
               {
               case 'c':
                 printf("c is called with value %s", optarg);
-                num_download = atoi(optarg);
+                num_download = (int) strtol(optarg, (char **)NULL, 10)
                 break;
               case 'd':
                 printf("d is called");
@@ -59,7 +59,7 @@ int  main(int argc, char* argv[])
               default:
                 abort ();
               }
-        printf("Num Download: %s\n", num_download);
+        printf("Num Download: %i\n", num_download);
         if(dflag == TRUE)
             printf("DFlag set\n");
         // strcpy(strHostName,argv[optind]);
