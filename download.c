@@ -22,7 +22,7 @@ int  main(int argc, char* argv[])
     char pBuffer[BUFFER_SIZE];
     unsigned nReadAmount;
     char strHostName[HOST_NAME_SIZE];
-    char url[HOST_NAME_SIZE];
+    char * url;
     int nHostPort;
 
     int num_download = 1;
@@ -68,7 +68,7 @@ int  main(int argc, char* argv[])
         printf ("host name: %s\n", strHostName);
         nHostPort=atoi(argv[optind + 1]);
         printf ("port: %i\n", nHostPort);
-        strcpy(url,argv[optind + 2]);
+        strcpy(url, argv[optind + 2]);
         printf ("url: %s\n", url);
       }
 
