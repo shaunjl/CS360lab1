@@ -103,7 +103,7 @@ int  main(int argc, char* argv[])
     }
 # define MAXMSG 1024
     char *message = (char *)malloc(MAXMSG);
-    sprintf(message, "GET /foo.html HTTP/1.1\r\nHOST:mclement.us:80\r\n\r\n");
+    sprintf(message, "GET %s HTTP/1.1\r\nHOST:%s:%i\r\n\r\n", url, strHostName, nHostPort);
     printf("Message:\n%s\n",message);
     write(hSocket,message,strlen(message));
     memset(pBuffer, 0, BUFFER_SIZE);
