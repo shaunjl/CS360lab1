@@ -68,7 +68,7 @@ int  main(int argc, char* argv[])
         printf ("host name: %s\n", strHostName);
         nHostPort=atoi(argv[optind + 1]);
         printf ("port: %i\n", nHostPort);
-        url=argv[optind + 2];
+        strcpy(url,argv[optind + 2]);
         printf ("url: %s\n", url);
       }
 
