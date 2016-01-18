@@ -8,10 +8,11 @@
 #include <stdlib.h>
 
 #define SOCKET_ERROR        -1
-#define BUFFER_SIZE         100
+#define BUFFER_SIZE         255
 #define HOST_NAME_SIZE      255
 #define TRUE                 1 
 #define FALSE                0
+# define MAXMSG            1024
 
 int  main(int argc, char* argv[])
 {
@@ -101,7 +102,6 @@ int  main(int argc, char* argv[])
         printf("\nCould not connect to host\n");
         return 0;
     }
-# define MAXMSG 1024
     char *message = (char *)malloc(MAXMSG);
     sprintf(message, "GET %s HTTP/1.1\r\nHOST:%s:%i\r\n\r\n", url, strHostName, nHostPort);
     printf("Message:\n%s\n",message);
@@ -111,6 +111,7 @@ int  main(int argc, char* argv[])
     ** number returned by read() and write() is the number of bytes
     ** read or written, with -1 being that an error occured */
     nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
+    printf("amount read: %i\n", nReadAmount);
     printf("Response: \n%s",pBuffer);
     if(close(hSocket) == SOCKET_ERROR)
     {
