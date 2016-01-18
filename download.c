@@ -113,6 +113,9 @@ int  main(int argc, char* argv[])
     nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
     printf("amount read: %i\n", nReadAmount);
     printf("Response: \n%s",pBuffer);
+    nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
+    printf("amount read: %i\n", nReadAmount);
+    printf("Response: \n%s",pBuffer);
     if(close(hSocket) == SOCKET_ERROR)
     {
 	printf("\nCould not close socket\n");
