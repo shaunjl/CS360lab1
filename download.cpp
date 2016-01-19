@@ -108,7 +108,6 @@ int  main(int argc, char* argv[])
     sprintf(message, "GET %s HTTP/1.1\r\nHOST:%s:%i\r\n\r\n", url, strHostName, nHostPort);
     printf("Message:\n%s\n",message);
     write(hSocket,message,strlen(message));
-    memset(pBuffer, 0, BUFFER_SIZE);
 
     // Read until I have got the whole message. Once I have read the full header change the amount to be read
 
@@ -116,6 +115,8 @@ int  main(int argc, char* argv[])
     ** number returned by read() and write() is the number of bytes
     ** read or written, with -1 being that an error occured */
     while(totalRead < toRead){
+        printf("Iteration");
+        memset(pBuffer, 0, BUFFER_SIZE);
         nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
         printf("amount read: %i\n", nReadAmount);
         printf("Response: \n%s",pBuffer);
