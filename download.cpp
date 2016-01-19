@@ -149,8 +149,6 @@ int  main(int argc, char* argv[])
     while(1){
         memset(pBuffer, 0, BUFFER_SIZE);
         nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
-        if (readHeaders)
-            totalRead += nReadAmount;
         printf("\namount read: %i\n", nReadAmount);
         printf("Response: \n%s",pBuffer);
         if (nReadAmount == 0){
