@@ -114,36 +114,48 @@ int  main(int argc, char* argv[])
     /* read from socket into buffer
     ** number returned by read() and write() is the number of bytes
     ** read or written, with -1 being that an error occured */
-    int readHeaders = FALSE;
-    while(totalRead < toRead){
+    // int readHeaders = FALSE;
+    // while(totalRead < toRead){
+    //     memset(pBuffer, 0, BUFFER_SIZE);
+    //     nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
+    //     if (readHeaders)
+    //         totalRead += nReadAmount;
+    //     printf("\namount read: %i\n", nReadAmount);
+    //     printf("Response: \n%s",pBuffer);
+    //     std::stringstream input;
+    //     int i;
+    //     //search for \r\n\r\n
+    //     for(i = 0; i < nReadAmount; i++){
+    //         input << pBuffer[i];
+    //     }
+    //     std::string c_length = "Content-Length: ";
+    //     std::size_t found = input.str().find(c_length);
+    //     if (found!=std::string::npos){
+    //         //get the amount to read
+    //         std::stringstream toReadSS;
+    //         int j = static_cast<int>(found) + c_length.length();
+    //         for(j; j < nReadAmount; j++){
+    //             printf("char: %c\n", pBuffer[j]);
+    //             toReadSS << pBuffer[j];
+    //             if (pBuffer[j + 1] == '\r'){
+    //                 break;
+    //             }
+    //         }
+    //         toRead = atoi(toReadSS.str().c_str());
+    //         printf("\namount to read: %i\n", toRead);
+    //         readHeaders = TRUE;
+    //     }
+    // }
+    while(1){
         memset(pBuffer, 0, BUFFER_SIZE);
         nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
         if (readHeaders)
             totalRead += nReadAmount;
         printf("\namount read: %i\n", nReadAmount);
         printf("Response: \n%s",pBuffer);
-        std::stringstream input;
-        int i;
-        //search for \r\n\r\n
-        for(i = 0; i < nReadAmount; i++){
-            input << pBuffer[i];
-        }
-        std::string c_length = "Content-Length: ";
-        std::size_t found = input.str().find(c_length);
-        if (found!=std::string::npos){
-            //get the amount to read
-            std::stringstream toReadSS;
-            int j = static_cast<int>(found) + c_length.length();
-            for(j; j < nReadAmount; j++){
-                printf("char: %c\n", pBuffer[j]);
-                toReadSS << pBuffer[j];
-                if (pBuffer[j + 1] == '\r'){
-                    break;
-                }
-            }
-            toRead = atoi(toReadSS.str().c_str());
-            printf("\namount to read: %i\n", toRead);
-            readHeaders = TRUE;
+        if (nReadAmount == 0){
+            printf("this point");
+            break;
         }
     }
     if(close(hSocket) == SOCKET_ERROR)
