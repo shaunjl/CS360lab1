@@ -114,10 +114,13 @@ int  main(int argc, char* argv[])
     /* read from socket into buffer
     ** number returned by read() and write() is the number of bytes
     ** read or written, with -1 being that an error occured */
+    int readHeaders = FALSE;
     while(totalRead < toRead){
         printf("Iteration");
         memset(pBuffer, 0, BUFFER_SIZE);
         nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
+        if (readHeaders)
+            totalRead += nReadAmount;
         printf("amount read: %i\n", nReadAmount);
         printf("Response: \n%s",pBuffer);
         std::stringstream input;
@@ -130,16 +133,20 @@ int  main(int argc, char* argv[])
         printf("made it herre");
         std::size_t found = input.str().find(c_length);
         if (found!=std::string::npos){
+            printf("found it");
             //get the amount to read
             std::stringstream toReadSS;
             int j = found + c_length.length();
             for(j = found; j < nReadAmount; j++){
                 printf("char: %c\n", pBuffer[j]);
                 toReadSS << pBuffer[j];
-                if (pBuffer[j + 1] == '\r\n')
+                if (pBuffer[j + 1] == '\r\n'){
+                    printf("in hree");
                     break;
+                }
             }
             toRead = atoi(toReadSS.str().c_str());
+            readHeaders = TRUE;
         }
         printf("up to here");
     }
