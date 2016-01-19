@@ -140,7 +140,7 @@ int  main(int argc, char* argv[])
             for(j; j < nReadAmount; j++){
                 printf("char: %c\n", pBuffer[j]);
                 toReadSS << pBuffer[j];
-                if (pBuffer[j + 1] == '\r\n'){
+                if (pBuffer[j + 1] == '\r'){
                     printf("in hree");
                     break;
                 }
