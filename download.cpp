@@ -138,7 +138,7 @@ int  main(int argc, char* argv[])
                 if (pBuffer[j + 1] == '\r\n')
                     break;
             }
-            toRead = atoi(toReadSS.str());
+            toRead = atoi(toReadSS.str().c_str());
         }
     }
     if(close(hSocket) == SOCKET_ERROR)
