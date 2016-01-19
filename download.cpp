@@ -136,8 +136,8 @@ int  main(int argc, char* argv[])
             printf("found it");
             //get the amount to read
             std::stringstream toReadSS;
-            int j = found + c_length.length();
-            for(j = found; j < nReadAmount; j++){
+            int j = static_cast<int>(found) + c_length.length();
+            for(j; j < nReadAmount; j++){
                 printf("char: %c\n", pBuffer[j]);
                 toReadSS << pBuffer[j];
                 if (pBuffer[j + 1] == '\r\n'){
