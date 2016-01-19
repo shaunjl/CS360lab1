@@ -124,10 +124,10 @@ int  main(int argc, char* argv[])
         int i;
         //search for \r\n\r\n
         for(i = 0; i < nReadAmount; i++){
-            printf("char: %c\n", pBuffer[i]);
             input << pBuffer[i];
         }
         std::string c_length = "Content-Length: ";
+        printf("made it herre");
         std::size_t found = input.str().find(c_length);
         if (found!=std::string::npos){
             //get the amount to read
@@ -141,6 +141,7 @@ int  main(int argc, char* argv[])
             }
             toRead = atoi(toReadSS.str().c_str());
         }
+        printf("up to here");
     }
     if(close(hSocket) == SOCKET_ERROR)
     {
