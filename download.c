@@ -6,13 +6,14 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #define SOCKET_ERROR        -1
-#define BUFFER_SIZE         255
+#define BUFFER_SIZE         256
 #define HOST_NAME_SIZE      255
 #define TRUE                 1 
 #define FALSE                0
-# define MAXMSG            1024
+#define MAXMSG            1024
 
 int  main(int argc, char* argv[])
 {
@@ -22,6 +23,8 @@ int  main(int argc, char* argv[])
     long nHostAddress;
     char pBuffer[BUFFER_SIZE];
     unsigned nReadAmount;
+    unsigned toRead = INT_MAX;
+    unsigned totalRead = 0;
     char strHostName[HOST_NAME_SIZE];
     char url[HOST_NAME_SIZE];
     int nHostPort;
@@ -107,15 +110,23 @@ int  main(int argc, char* argv[])
     printf("Message:\n%s\n",message);
     write(hSocket,message,strlen(message));
     memset(pBuffer, 0, BUFFER_SIZE);
+
+    // Read until I have got the whole message. Once I have read the full header change the amount to be read
+
     /* read from socket into buffer
     ** number returned by read() and write() is the number of bytes
     ** read or written, with -1 being that an error occured */
-    nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
-    printf("amount read: %i\n", nReadAmount);
-    printf("Response: \n%s",pBuffer);
-    nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
-    printf("amount read: %i\n", nReadAmount);
-    printf("Response: \n%s",pBuffer);
+    while(totalRead < toRead){
+        nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
+        printf("amount read: %i\n", nReadAmount);
+        printf("Response: \n%s",pBuffer);
+        int i;
+        //search for \r\n\r\n
+        for(i = 0; i < nReadAmount; i++){
+            printf("char: %c\n", pBuffer[i]);  
+        }
+        break;
+    }
     if(close(hSocket) == SOCKET_ERROR)
     {
 	printf("\nCould not close socket\n");
