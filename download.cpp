@@ -119,25 +119,26 @@ int  main(int argc, char* argv[])
         nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
         printf("amount read: %i\n", nReadAmount);
         printf("Response: \n%s",pBuffer);
-        stringstream<char> input;
+        std::stringstream input;
         int i;
         //search for \r\n\r\n
         for(i = 0; i < nReadAmount; i++){
             printf("char: %c\n", pBuffer[i]);
             input << pBuffer[i];
         }
-        std::size_t found = input.str().find("Content-Length: ");
+        std::string c_length = "Content-Length: ";
+        std::size_t found = input.str().find(c_length);
         if (found!=std::string::npos){
             //get the amount to read
-            stringstream<char> toReadSS;
-            int j = found + "Content-Length: ".length();
+            std::stringstream toReadSS;
+            int j = found + c_length.length();
             for(j = found; j < nReadAmount; j++){
                 printf("char: %c\n", pBuffer[j]);
                 toReadSS << pBuffer[j];
                 if (pBuffer[j + 1] == '\r\n')
                     break;
             }
-            toRead = stoi(toReadSS.str());
+            toRead = std::stoi(toReadSS.str());
         }
     }
     if(close(hSocket) == SOCKET_ERROR)
