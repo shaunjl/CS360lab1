@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <sstream>
 
 #define SOCKET_ERROR        -1
 #define BUFFER_SIZE         256
@@ -55,8 +56,6 @@ int  main(int argc, char* argv[])
               case '?':
                 if (optopt == 'c')
                   fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-                else if (isprint (optopt))
-                  fprintf (stderr, "Unknown option `-%c'.\n", optopt);
                 else
                   fprintf (stderr,
                            "Unknown option character `\\x%x'.\n",
@@ -120,12 +119,26 @@ int  main(int argc, char* argv[])
         nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
         printf("amount read: %i\n", nReadAmount);
         printf("Response: \n%s",pBuffer);
+        stringstream<char> input;
         int i;
         //search for \r\n\r\n
         for(i = 0; i < nReadAmount; i++){
-            printf("char: %c\n", pBuffer[i]);  
+            printf("char: %c\n", pBuffer[i]);
+            input << pBuffer[i];
         }
-        break;
+        std::size_t found = input.str().find("Content-Length: ");
+        if (found!=std::string::npos){
+            //get the amount to read
+            stringstream<char> toReadSS;
+            int j = found + "Content-Length: ".length();
+            for(j = found; j < nReadAmount; j++){
+                printf("char: %c\n", pBuffer[j]);
+                toReadSS << pBuffer[j];
+                if (pBuffer[j + 1] == '\r\n')
+                    break;
+            }
+            toRead = stoi(toReadSS.str());
+        }
     }
     if(close(hSocket) == SOCKET_ERROR)
     {
