@@ -45,27 +45,30 @@ int  main(int argc, char* argv[])
             switch (c)
               {
               case 'c':
-                printf("c is called with value %s", optarg);
-
-                num_download = (int) strtol(optarg, (char **)NULL, 10);
-                break;
+                  try {
+                      num_download = (int) strtol(optarg, (char **)NULL, 10);
+                    }
+                  catch (int n) {
+                      fprintf (stderr, "Option -c requires an argument.\n");
+                      abort ();
+                  }
+                  
+                  break;
               case 'd':
-                printf("d is called");
-                dflag = TRUE;
-                break;
+                  dflag = TRUE;
+                  break;
               case '?':
-                if (optopt == 'c')
-                  fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-                else
-                  fprintf (stderr,
+                  if (optopt == 'c')
+                      fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+                  else
+                      fprintf (stderr,
                            "Unknown option character `\\x%x'.\n",
                            optopt);
-                return 1;
+                  return 1;
               default:
-                abort ();
+                  abort ();
               }
-        if(dflag == TRUE)
-            printf("DFlag set\n");
+
         strcpy(strHostName,argv[optind]);
         nHostPort=atoi(argv[optind + 1]);
         strcpy(url, argv[optind + 2]);
@@ -99,7 +102,7 @@ int  main(int argc, char* argv[])
     char *message = (char *)malloc(MAXMSG);
     sprintf(message, "GET %s HTTP/1.1\r\nHOST:%s:%i\r\n\r\n", url, strHostName, nHostPort);
     if(dflag)
-        printf("Message:\n%s\n",message);
+        printf("\n%s\n",message);
     write(hSocket,message,strlen(message));
 
     // Read until I have got the whole message. Once I have read the full header change the amount to be read
