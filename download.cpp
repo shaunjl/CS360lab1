@@ -157,7 +157,7 @@ int  main(int argc, char* argv[])
 
     int num_success = 0;
     int i;
-    for(i = 0; i < num_download; i++)){
+    for(i = 0; i < num_download; i++){
         while(1)
         {
             memset(pBuffer, 0, BUFFER_SIZE);
