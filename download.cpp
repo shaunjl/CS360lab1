@@ -47,8 +47,10 @@ int  main(int argc, char* argv[])
 
     int num_download = 0;
     int dflag = FALSE;
-    int c = 0;
 
+    // Get Options and arguments
+    
+    int c = 0;
     if(argc < 4)
         {
         printf("\nUsage: client <options> host-name host-port url\n");
@@ -89,49 +91,53 @@ int  main(int argc, char* argv[])
                     return 0;  
                 }
         }
-    /* make a socket */
-    hSocket=socket(AF_INET,SOCK_STREAM,0);
 
-    if(hSocket == SOCKET_ERROR)
-    {
-        printf("\nCould not make a socket\n");
-        return 0;
-    }
+    // If not -c mode
 
-    /* get IP address from name */
-    pHostInfo=gethostbyname(strHostName);
-    if(pHostInfo == NULL)
+    if(num_download == 0){
+
+        /* make a socket */
+        hSocket=socket(AF_INET,SOCK_STREAM,0);
+
+        if(hSocket == SOCKET_ERROR)
         {
-        printf("\nCould not connect to host\n");
-        return 0;
+            printf("\nCould not make a socket\n");
+            return 0;
         }
 
-    /* copy address into long */
-    memcpy(&nHostAddress,pHostInfo->h_addr,pHostInfo->h_length);
+        /* get IP address from name */
+        pHostInfo=gethostbyname(strHostName);
+        if(pHostInfo == NULL)
+            {
+            printf("\nCould not connect to host\n");
+            return 0;
+            }
 
-    /* fill address struct */
-    Address.sin_addr.s_addr=nHostAddress;
-    Address.sin_port=htons(nHostPort);
-    Address.sin_family=AF_INET;
+        /* copy address into long */
+        memcpy(&nHostAddress,pHostInfo->h_addr,pHostInfo->h_length);
 
-    /* connect to host */
-    if(connect(hSocket,(struct sockaddr*)&Address,sizeof(Address)) 
-       == SOCKET_ERROR)
-    {
-        printf("\nCould not connect to host\n");
-        return 0;
-    }
-    char *message = (char *)malloc(MAXMSG);
-    sprintf(message, "GET %s HTTP/1.1\r\nHOST:%s:%i\r\n\r\n", url, strHostName, nHostPort);
-    if(dflag)
-        printf("\n%s",message);
-    write(hSocket,message,strlen(message));
+        /* fill address struct */
+        Address.sin_addr.s_addr=nHostAddress;
+        Address.sin_port=htons(nHostPort);
+        Address.sin_family=AF_INET;
 
-    int readHeaders = FALSE;
-    int justReadHeaders = FALSE;
-    std::stringstream headers;
-    std::stringstream body;
-    if(num_download == 0){
+        /* connect to host */
+        if(connect(hSocket,(struct sockaddr*)&Address,sizeof(Address)) 
+           == SOCKET_ERROR)
+        {
+            printf("\nCould not connect to host\n");
+            return 0;
+        }
+        char *message = (char *)malloc(MAXMSG);
+        sprintf(message, "GET %s HTTP/1.1\r\nHOST:%s:%i\r\n\r\n", url, strHostName, nHostPort);
+        if(dflag)
+            printf("\n%s",message);
+        write(hSocket,message,strlen(message));
+
+        int readHeaders = FALSE;
+        int justReadHeaders = FALSE;
+        std::stringstream headers;
+        std::stringstream body;
         while(1){
             memset(pBuffer, 0, BUFFER_SIZE);
             nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
@@ -162,31 +168,70 @@ int  main(int argc, char* argv[])
             printf("\n\n");
         }
         printf(body.str().c_str());
-    }
 
-    int num_success = 0;
-    int i;
-    for(i = 0; i < num_download; i++){
-        while(1)
-        {
-            memset(pBuffer, 0, BUFFER_SIZE);
-            nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
-            if (nReadAmount == -1){
-                break;
+        if(close(hSocket) == SOCKET_ERROR){
+            printf("\nCould not close socket\n");
+        }
+
+        free(message);
+    }
+    else {  // In -c mode
+        int num_success = 0;
+        int i;
+        for(i = 0; i < num_download; i++){
+            /* make a socket */
+            hSocket=socket(AF_INET,SOCK_STREAM,0);
+
+            if(hSocket == SOCKET_ERROR)
+            {
+                printf("\nCould not make a socket\n");
+                return 0;
             }
-            if (nReadAmount == 0){
-                num_success++;
-                break;
+
+            /* get IP address from name */
+            pHostInfo=gethostbyname(strHostName);
+            if(pHostInfo == NULL)
+                {
+                printf("\nCould not connect to host\n");
+                return 0;
+                }
+
+            /* copy address into long */
+            memcpy(&nHostAddress,pHostInfo->h_addr,pHostInfo->h_length);
+
+            /* fill address struct */
+            Address.sin_addr.s_addr=nHostAddress;
+            Address.sin_port=htons(nHostPort);
+            Address.sin_family=AF_INET;
+
+            /* connect to host */
+            if(connect(hSocket,(struct sockaddr*)&Address,sizeof(Address)) 
+               == SOCKET_ERROR)
+            {
+                printf("\nCould not connect to host\n");
+                return 0;
+            }
+            char *message = (char *)malloc(MAXMSG);
+            sprintf(message, "GET %s HTTP/1.1\r\nHOST:%s:%i\r\n\r\n", url, strHostName, nHostPort);
+            if(dflag)
+                printf("\n%s",message);
+            write(hSocket,message,strlen(message));
+
+            // Read the response
+            while(1)
+            {
+                memset(pBuffer, 0, BUFFER_SIZE);
+                nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
+                if (nReadAmount == -1){
+                    break;
+                }
+                if (nReadAmount == 0){
+                    num_success++;
+                    break;
+                }
             }
         }
-    }
-
-    if(num_download > 0)
         printf("Successful Downloads: %i\n", num_success);
-
-    if(close(hSocket) == SOCKET_ERROR)
-    {
-	printf("\nCould not close socket\n");
     }
-    free(message);
+
 }
