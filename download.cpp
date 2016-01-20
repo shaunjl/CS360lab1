@@ -10,7 +10,7 @@
 #include <sstream>
 
 #define SOCKET_ERROR        -1
-#define BUFFER_SIZE         256
+#define BUFFER_SIZE         260
 #define HOST_NAME_SIZE      255
 #define TRUE                 1 
 #define FALSE                0
