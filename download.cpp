@@ -16,6 +16,9 @@
 #define FALSE                0
 #define MAXMSG            1024
 
+
+// TODO: ./download gumfoot.byu.edu 80 /foo.html causes seg fault
+
 int is_number(const char *input)
 {
     bool is_num = TRUE;
@@ -97,6 +100,12 @@ int  main(int argc, char* argv[])
 
     /* get IP address from name */
     pHostInfo=gethostbyname(strHostName);
+    if(pHostInfo == NULL)
+        {
+        printf("\nCould not connect to host\n");
+        return 0;
+        }
+
     /* copy address into long */
     memcpy(&nHostAddress,pHostInfo->h_addr,pHostInfo->h_length);
 
