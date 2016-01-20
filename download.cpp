@@ -58,7 +58,7 @@ int  main(int argc, char* argv[])
                 {
                 case 'c':
                     try {
-                        if (!is_number(optarg))
+                        if (is_number(optarg) == FALSE)
                             printf("not a number");
                         num_download = (int) strtol(optarg, (char **)NULL, 10);
                       }
