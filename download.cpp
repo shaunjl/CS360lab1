@@ -172,10 +172,11 @@ int  main(int argc, char* argv[])
             readHeaders = TRUE;
             justReadHeaders = TRUE;
         }
-        i = 0;
         if(justReadHeaders){
             i += 4;
             justReadHeaders = FALSE;
+        } else {
+            i = 0;
         }
         for(i; i < nReadAmount; i++)
             body << pBuffer[i];
