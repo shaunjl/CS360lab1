@@ -17,7 +17,7 @@
 #define MAXMSG            1024
 
 
-// TODO: ./download gumfoot.byu.edu 80 /foo.html causes seg fault
+// TODO: -c should make request each time
 
 int is_number(const char *input)
 {
