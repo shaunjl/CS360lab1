@@ -186,6 +186,7 @@ int  main(int argc, char* argv[])
     }
     if(dflag)
         printf(headers.str().c_str());
+    printf("\n");
     printf(body.str().c_str());
 
     if(close(hSocket) == SOCKET_ERROR)
