@@ -47,46 +47,45 @@ int  main(int argc, char* argv[])
     int c = 0;
 
     if(argc < 4)
-      {
+        {
         printf("\nUsage: client <options> host-name host-port url\n");
         return 0;
-      }
+        }
     else
-      {
-        while ((c = getopt (argc, argv, "c:d")) != -1)
-            switch (c)
-                {
-                case 'c':
-                    try {
-                        if (is_number(optarg) == FALSE)
-                            printf("not a number");
+        {
+        try
+            {
+            while ((c = getopt (argc, argv, "c:d")) != -1)
+                switch (c)
+                    {
+                    case 'c':
                         num_download = (int) strtol(optarg, (char **)NULL, 10);
-                      }
-                    catch (int n) {
-                        fprintf (stderr, "Option -c requires an argument.\n");
+                        break;
+                    case 'd':
+                        dflag = TRUE;
+                        break;
+                    case '?':
+                        if (optopt == 'c')
+                            fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+                        else
+                            fprintf (stderr,
+                                   "Unknown option character `\\x%x'.\n",
+                                   optopt);
+                        return 1;
+                    default:
                         abort ();
                     }
-                  
-                    break;
-                case 'd':
-                    dflag = TRUE;
-                    break;
-                case '?':
-                    if (optopt == 'c')
-                        fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-                    else
-                        fprintf (stderr,
-                               "Unknown option character `\\x%x'.\n",
-                               optopt);
-                    return 1;
-                default:
-                    abort ();
-                }
 
-        strcpy(strHostName,argv[optind]);
-        nHostPort=atoi(argv[optind + 1]);
-        strcpy(url, argv[optind + 2]);
-      }
+            strcpy(strHostName,argv[optind]);
+            nHostPort=atoi(argv[optind + 1]);
+            strcpy(url, argv[optind + 2]);
+            }
+            catch (int i)
+                {
+                    printf("\nUsage: client <options> host-name host-port url\n");
+                    return 0;  
+                }
+        }
     /* make a socket */
     hSocket=socket(AF_INET,SOCK_STREAM,0);
 
