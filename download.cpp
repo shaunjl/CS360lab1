@@ -162,7 +162,6 @@ int  main(int argc, char* argv[])
     while(1){
         memset(pBuffer, 0, BUFFER_SIZE);
         nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
-        printf(pBuffer);
         int i;
         if(readHeaders == FALSE){
             for(i = 0; i < nReadAmount - 4; i++){
