@@ -163,8 +163,8 @@ int  main(int argc, char* argv[])
         if(dflag == TRUE && readHeaders == FALSE){
             std::stringstream headers;
             int i;
-            for(i = 0; i < nReadAmount - 1; i++){
-                if (pBuffer[i] == '\r\n' && pBuffer[i+1] == '\r\n')
+            for(i = 0; i < nReadAmount - 4; i++){
+                if (pBuffer[i] == '\r' && pBuffer[i + 1] == '\n' && pBuffer[i+2] == '\r' && pBuffer[i+3] == '\n')
                     break;
                 headers << pBuffer[i];
             }
