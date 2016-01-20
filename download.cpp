@@ -169,7 +169,7 @@ int  main(int argc, char* argv[])
                 headers << pBuffer[i];
             }
             readHeaders = TRUE;
-            prinf("headers: %s", headers.str());
+            printf("headers: %s", headers.str());
         }
 
         if (nReadAmount == 0){
