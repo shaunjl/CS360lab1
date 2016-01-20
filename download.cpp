@@ -156,26 +156,38 @@ int  main(int argc, char* argv[])
     //     }
     // }
     int readHeaders = FALSE;
+    int justReadHeaders = FALSE;
+    std::stringstream headers;
+    std::stringstream body;
     while(1){
         memset(pBuffer, 0, BUFFER_SIZE);
         nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
         printf(pBuffer);
-        if(dflag == TRUE && readHeaders == FALSE){
-            std::stringstream headers;
-            int i;
+        int i;
+        if(readHeaders == FALSE){
             for(i = 0; i < nReadAmount - 4; i++){
                 if (pBuffer[i] == '\r' && pBuffer[i + 1] == '\n' && pBuffer[i+2] == '\r' && pBuffer[i+3] == '\n')
                     break;
                 headers << pBuffer[i];
             }
             readHeaders = TRUE;
-            printf("headers: %s", headers.str().c_str());
+            justReadHeaders = TRUE;
         }
-
+        i = 0;
+        if(justReadHeaders){
+            i += 4;
+            justReadHeaders = FALSE;
+        }
+        for(i; i < nReadAmount; i++)
+            body << pBuffer[i];
         if (nReadAmount == 0){
             break;
         }
     }
+    if(dflag)
+        printf(headers.str().c_str());
+    printf(body.str().c_str());
+
     if(close(hSocket) == SOCKET_ERROR)
     {
 	printf("\nCould not close socket\n");
