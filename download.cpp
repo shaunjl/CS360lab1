@@ -19,6 +19,7 @@
 int is_number(const char *input)
 {
     bool is_num = TRUE;
+    int i = 0;
     while (input[i] != '\0'){
         if (!std::isdigit(input[i]))
             is_num = FALSE;
