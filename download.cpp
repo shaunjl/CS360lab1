@@ -10,7 +10,7 @@
 #include <sstream>
 
 #define SOCKET_ERROR        -1
-#define BUFFER_SIZE         260
+#define BUFFER_SIZE         400
 #define HOST_NAME_SIZE      255
 #define TRUE                 1 
 #define FALSE                0
@@ -106,7 +106,8 @@ int  main(int argc, char* argv[])
     }
     char *message = (char *)malloc(MAXMSG);
     sprintf(message, "GET %s HTTP/1.1\r\nHOST:%s:%i\r\n\r\n", url, strHostName, nHostPort);
-    printf("Message:\n%s\n",message);
+    if(dflag)
+        printf("Message:\n%s\n",message);
     write(hSocket,message,strlen(message));
 
     // Read until I have got the whole message. Once I have read the full header change the amount to be read
@@ -147,10 +148,12 @@ int  main(int argc, char* argv[])
     //     }
     // }
     printf("Response: \n");
+    int readHeaders = FALSE;
     while(1){
         memset(pBuffer, 0, BUFFER_SIZE);
         nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
         printf(pBuffer);
+
         if (nReadAmount == 0){
             break;
         }
