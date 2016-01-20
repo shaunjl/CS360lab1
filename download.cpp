@@ -43,31 +43,33 @@ int  main(int argc, char* argv[])
       {
         while ((c = getopt (argc, argv, "c:d")) != -1)
             switch (c)
-              {
-              case 'c':
-                  try {
-                      num_download = (int) strtol(optarg, (char **)NULL, 10);
+                {
+                case 'c':
+                    try {
+                        printf("here\n");
+                        num_download = (int) strtol(optarg, (char **)NULL, 10);
+                        printf("there\n");
+                      }
+                    catch (int n) {
+                        fprintf (stderr, "Option -c requires an argument.\n");
+                        abort ();
                     }
-                  catch (int n) {
-                      fprintf (stderr, "Option -c requires an argument.\n");
-                      abort ();
-                  }
                   
-                  break;
-              case 'd':
-                  dflag = TRUE;
-                  break;
-              case '?':
-                  if (optopt == 'c')
-                      fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-                  else
-                      fprintf (stderr,
-                           "Unknown option character `\\x%x'.\n",
-                           optopt);
-                  return 1;
-              default:
-                  abort ();
-              }
+                    break;
+                case 'd':
+                    dflag = TRUE;
+                    break;
+                case '?':
+                    if (optopt == 'c')
+                        fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+                    else
+                        fprintf (stderr,
+                               "Unknown option character `\\x%x'.\n",
+                               optopt);
+                    return 1;
+                default:
+                    abort ();
+                }
 
         strcpy(strHostName,argv[optind]);
         nHostPort=atoi(argv[optind + 1]);
@@ -102,7 +104,7 @@ int  main(int argc, char* argv[])
     char *message = (char *)malloc(MAXMSG);
     sprintf(message, "GET %s HTTP/1.1\r\nHOST:%s:%i\r\n\r\n", url, strHostName, nHostPort);
     if(dflag)
-        printf("\n%s\n",message);
+        printf("\n%s",message);
     write(hSocket,message,strlen(message));
 
     // Read until I have got the whole message. Once I have read the full header change the amount to be read
