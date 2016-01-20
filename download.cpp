@@ -16,6 +16,17 @@
 #define FALSE                0
 #define MAXMSG            1024
 
+int is_number(const char *input)
+{
+    bool is_num = TRUE;
+    while (input[i] != '\0'){
+        if (!std::isdigit(input[i]))
+            is_num = FALSE;
+        i++;
+    }
+    return is_num
+}
+
 int  main(int argc, char* argv[])
 {
     int hSocket;                 /* handle to socket */
@@ -46,9 +57,8 @@ int  main(int argc, char* argv[])
                 {
                 case 'c':
                     try {
-                        printf("here\n");
+                        if (!is_number(optarg))
                         num_download = (int) strtol(optarg, (char **)NULL, 10);
-                        printf("there\n");
                       }
                     catch (int n) {
                         fprintf (stderr, "Option -c requires an argument.\n");
