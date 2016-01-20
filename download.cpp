@@ -191,9 +191,10 @@ int  main(int argc, char* argv[])
         }
         printf(body.str().c_str());
     }
-    
+
     int num_success = 0;
-    for(int i = 0; i < num_download; i++)){
+    int i;
+    for(i = 0; i < num_download; i++)){
         while(1)
         {
             memset(pBuffer, 0, BUFFER_SIZE);
