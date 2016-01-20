@@ -160,6 +160,17 @@ int  main(int argc, char* argv[])
         memset(pBuffer, 0, BUFFER_SIZE);
         nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
         printf(pBuffer);
+        if(dflag == TRUE && readHeaders == FALSE){
+            std::stringstream headers;
+            int i;
+            for(i = 0; i < nReadAmount - 1; i++){
+                if (pBuffer[i] == '\n' && pBuffer[i+1] == '\n')
+                    break;
+                headers << pBuffer[i];
+            }
+            readHeaders = TRUE;
+            prinf("headers: %s", headers.str());
+        }
 
         if (nReadAmount == 0){
             break;
