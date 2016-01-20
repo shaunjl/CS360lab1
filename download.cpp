@@ -25,7 +25,7 @@ int is_number(const char *input)
             is_num = FALSE;
         i++;
     }
-    return is_num
+    return is_num;
 }
 
 int  main(int argc, char* argv[])
