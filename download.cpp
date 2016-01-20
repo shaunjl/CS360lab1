@@ -42,7 +42,7 @@ int  main(int argc, char* argv[])
     char url[HOST_NAME_SIZE];
     int nHostPort;
 
-    int num_download = 1;
+    int num_download = 0;
     int dflag = FALSE;
     int c = 0;
 
@@ -159,35 +159,57 @@ int  main(int argc, char* argv[])
     int justReadHeaders = FALSE;
     std::stringstream headers;
     std::stringstream body;
-    while(1){
-        memset(pBuffer, 0, BUFFER_SIZE);
-        nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
-        int i;
-        if(readHeaders == FALSE){
-            for(i = 0; i < nReadAmount - 4; i++){
-                if (pBuffer[i] == '\r' && pBuffer[i + 1] == '\n' && pBuffer[i+2] == '\r' && pBuffer[i+3] == '\n')
-                    break;
-                headers << pBuffer[i];
+    if(num_download == 0){}
+        while(1){
+            memset(pBuffer, 0, BUFFER_SIZE);
+            nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
+            int i;
+            if(readHeaders == FALSE){
+                for(i = 0; i < nReadAmount - 4; i++){
+                    if (pBuffer[i] == '\r' && pBuffer[i + 1] == '\n' && pBuffer[i+2] == '\r' && pBuffer[i+3] == '\n')
+                        break;
+                    headers << pBuffer[i];
+                }
+                readHeaders = TRUE;
+                justReadHeaders = TRUE;
             }
-            readHeaders = TRUE;
-            justReadHeaders = TRUE;
+            if(justReadHeaders){
+                i += 4;
+                justReadHeaders = FALSE;
+            } else {
+                i = 0;
+            }
+            for(i; i < nReadAmount; i++)
+                body << pBuffer[i];
+            if (nReadAmount == 0){
+                break;
+            }
         }
-        if(justReadHeaders){
-            i += 4;
-            justReadHeaders = FALSE;
-        } else {
-            i = 0;
+        if(dflag){
+            printf(headers.str().c_str());
+            printf("\n\n");
         }
-        for(i; i < nReadAmount; i++)
-            body << pBuffer[i];
-        if (nReadAmount == 0){
-            break;
+        printf(body.str().c_str());
+    }
+    
+    int num_success = 0;
+    for(int i = 0; i < num_download; i++)){
+        while(1)
+        {
+            memset(pBuffer, 0, BUFFER_SIZE);
+            nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
+            if (nReadAmount == -1){
+                break;
+            }
+            if (nReadAmount == 0){
+                num_success++;
+                break;
+            }
         }
     }
-    if(dflag)
-        printf(headers.str().c_str());
-    printf("\n");
-    printf(body.str().c_str());
+
+    if(num_download > 0)
+        printf("Successful Downloads: %i\n", num_success);
 
     if(close(hSocket) == SOCKET_ERROR)
     {
