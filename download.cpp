@@ -146,13 +146,12 @@ int  main(int argc, char* argv[])
     //         readHeaders = TRUE;
     //     }
     // }
+    printf("Response: \n");
     while(1){
         memset(pBuffer, 0, BUFFER_SIZE);
         nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
-        printf("\namount read: %i\n", nReadAmount);
-        printf("Response: \n%s",pBuffer);
+        printf(pBuffer);
         if (nReadAmount == 0){
-            printf("this point");
             break;
         }
     }
