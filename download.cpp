@@ -64,18 +64,12 @@ int  main(int argc, char* argv[])
               default:
                 abort ();
               }
-        printf("Num Download: %i\n", num_download);
         if(dflag == TRUE)
             printf("DFlag set\n");
         strcpy(strHostName,argv[optind]);
-        printf ("host name: %s\n", strHostName);
         nHostPort=atoi(argv[optind + 1]);
-        printf ("port: %i\n", nHostPort);
         strcpy(url, argv[optind + 2]);
-        printf ("url: %s\n", url);
       }
-
-    printf("\nMaking a socket");
     /* make a socket */
     hSocket=socket(AF_INET,SOCK_STREAM,0);
 
@@ -94,8 +88,6 @@ int  main(int argc, char* argv[])
     Address.sin_addr.s_addr=nHostAddress;
     Address.sin_port=htons(nHostPort);
     Address.sin_family=AF_INET;
-
-    printf("\nConnecting to %s (%X) on port %d",strHostName,nHostAddress,nHostPort);
 
     /* connect to host */
     if(connect(hSocket,(struct sockaddr*)&Address,sizeof(Address)) 
@@ -147,7 +139,6 @@ int  main(int argc, char* argv[])
     //         readHeaders = TRUE;
     //     }
     // }
-    printf("Response: \n");
     int readHeaders = FALSE;
     while(1){
         memset(pBuffer, 0, BUFFER_SIZE);
